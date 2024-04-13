@@ -3,6 +3,7 @@ class FeatureSerializer < ActiveModel::Serializer
   attribute :type
   attribute :feature_attributes, key: :attributes
   attribute :feature_links, key: :links
+  has_many :comments
 
   def type
     'feature'
@@ -30,3 +31,4 @@ class FeatureSerializer < ActiveModel::Serializer
     }
   end
 end
+

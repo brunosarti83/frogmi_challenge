@@ -1,19 +1,19 @@
 class FeaturesController < ApplicationController
-  before_action :set_feature, only: %i[ show update destroy ]
+  # before_action :set_feature, only: %i[ show update destroy ]
   before_action :validate_per_page, only: %i[ index ]
 
   # GET /features
   def index
-    per_page = params[:per_page] || 15
-    page = params[:page] || 1
-
+    
     if params[:mag_type].present?
       mag_types = params[:mag_type].split(",")
       @filtered = Feature.where(mag_type: mag_types)
     else
       @filtered = Feature.all
     end
-
+    
+    per_page = params[:per_page] || 15
+    page = params[:page] || 1
     offset = (page.to_i - 1) * per_page.to_i
     total_count = @filtered.count
     
@@ -29,35 +29,35 @@ class FeaturesController < ApplicationController
     }
   end
 
-  # GET /features/1
-  def show
-    render json: @feature
-  end
+  # # GET /features/1
+  # def show
+  #   render json: @feature
+  # end
 
-  # POST /features
-  def create
-    @feature = Feature.new(feature_params)
+  # # POST /features
+  # def create
+  #   @feature = Feature.new(feature_params)
 
-    if @feature.save
-      render json: @feature, status: :created, location: @feature
-    else
-      render json: @feature.errors, status: :unprocessable_entity
-    end
-  end
+  #   if @feature.save
+  #     render json: @feature, status: :created, location: @feature
+  #   else
+  #     render json: @feature.errors, status: :unprocessable_entity
+  #   end
+  # end
 
-  # PATCH/PUT /features/1
-  def update
-    if @feature.update(feature_params)
-      render json: @feature
-    else
-      render json: @feature.errors, status: :unprocessable_entity
-    end
-  end
+  # # PATCH/PUT /features/1
+  # def update
+  #   if @feature.update(feature_params)
+  #     render json: @feature
+  #   else
+  #     render json: @feature.errors, status: :unprocessable_entity
+  #   end
+  # end
 
-  # DELETE /features/1
-  def destroy
-    @feature.destroy!
-  end
+  # # DELETE /features/1
+  # def destroy
+  #   @feature.destroy!
+  # end
 
   private
 
@@ -69,10 +69,10 @@ class FeaturesController < ApplicationController
       end
     end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_feature
-      @feature = Feature.find(params[:id])
-    end
+    # # Use callbacks to share common setup or constraints between actions.
+    # def set_feature
+    #   @feature = Feature.find(params[:id])
+    # end
 
     # Only allow a list of trusted parameters through.
     def feature_params

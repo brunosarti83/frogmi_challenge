@@ -5,6 +5,7 @@ gem "rails", "~> 7.1.3", ">= 7.1.3.2"
 gem "sqlite3", "~> 1.4"
 gem "puma", ">= 5.0"
 gem "httparty"
+gem "active_model_serializers"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible

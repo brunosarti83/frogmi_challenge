@@ -1,11 +1,32 @@
 class FeaturesController < ApplicationController
   before_action :set_feature, only: %i[ show update destroy ]
+  before_action :validate_per_page, only: %i[ index ]
 
   # GET /features
   def index
-    @features = Feature.all
+    per_page = params[:per_page] || 15
+    page = params[:page] || 1
 
-    render json: @features
+    if params[:mag_type].present?
+      mag_types = params[:mag_type].split(",")
+      @filtered = Feature.where(mag_type: mag_types)
+    else
+      @filtered = Feature.all
+    end
+
+    offset = (page.to_i - 1) * per_page.to_i
+    total_count = @filtered.count
+    
+    @features = @filtered.limit(per_page).offset(offset)
+
+    render json: {
+      data: ActiveModel::Serializer::CollectionSerializer.new(@features, each_serializer: FeatureSerializer),
+      pagination: {
+        current_page: page.to_i,
+        total: total_count,
+        per_page: per_page.to_i
+      }
+    }
   end
 
   # GET /features/1
@@ -39,6 +60,15 @@ class FeaturesController < ApplicationController
   end
 
   private
+
+    def validate_per_page
+      if params[:per_page].present? 
+        unless params[:per_page].to_i <= 1000
+          render json: { error: "per_page should not exceed 1000" }, status: :unprocessable_entity
+        end
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_feature
       @feature = Feature.find(params[:id])

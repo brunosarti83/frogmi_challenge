@@ -3,7 +3,9 @@ class FeatureSerializer < ActiveModel::Serializer
   attribute :type
   attribute :feature_attributes, key: :attributes
   attribute :feature_links, key: :links
-  has_many :comments
+  has_many :comments do 
+    object.comments.order(id: :desc)
+  end
 
   def type
     'feature'

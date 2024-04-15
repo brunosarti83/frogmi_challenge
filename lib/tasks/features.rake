@@ -14,6 +14,7 @@ namespace :features do
     if response.success?
       parsed_response = JSON.parse(response.body)
       puts "HTTP GET request was successful!"
+      puts "...running..."
       created = 0
       failed = 0
       entries = parsed_response["features"]
@@ -31,10 +32,10 @@ namespace :features do
             title: entry["properties"]["title"],
             external_url: entry["properties"]["url"]
           )
-          puts "Record created successfully!"
+          # puts "Record created successfully!"
           created += 1
         rescue ActiveRecord::RecordInvalid => e
-          puts "Validation failed: #{e.record.errors.full_messages.join(", ")}"
+          # puts "Validation failed: #{e.record.errors.full_messages.join(", ")}"
           failed += 1
           next
         end
